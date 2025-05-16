@@ -7,11 +7,14 @@ export default function Home() {
   const [count, setCount] = useState(0);
   const [isTyping, setIsTyping] = useState(false);
 
-  const words : string[] = ["daniel is the goat", "Welcome to Next.js", "This is a blinker effect", "Enjoy coding!"];
+  const words : string[] = ["i am a student", "i am an innovator", "i am a creator"];
+
+  const returnIndex = (index: number) => index%words.length;
 
   useEffect(() => {
     
     let interval: NodeJS.Timeout | undefined;
+
     if (!isTyping) {
       interval = setInterval(() => {
       setBlinker((prev) => (prev === "|" ? "" : "|"));
@@ -25,29 +28,40 @@ export default function Home() {
 
   useEffect( () => {
     let timeouts: NodeJS.Timeout[] = [];
-    
+
+    const currWord = words[count];
+    const nextWord = words[returnIndex(count+1)];
+    let shared = 0;
+    while (shared < currWord.length && shared < nextWord.length && currWord[shared] === nextWord[shared]) {
+      shared++;
+    }
+
+
     setIsTyping(true);
 
-      for (let i = 0; i < words[count].length; i++) {
+      for (let i = shared; i < words[count].length; i++) {
         timeouts.push
-        (setTimeout( () => setText(words[count].slice(0, i + 1)), 100*i))
+        (setTimeout( () => setText(words[count].slice(0, i + 1)), 100*(i-shared)))
     }
 
     const typingDuration = 100* words[count].length + 500
 
     timeouts.push(setTimeout(() => setIsTyping(false), typingDuration + 2000))
-    for (let i = words[count].length-1; i>=0; i--) {
+    for (let i = currWord.length-1; i>=shared; i--) {
       timeouts.push
-        (setTimeout( () => setText(words[count].slice(0, i)), typingDuration + 100*(words[count].length - i)))
+        (setTimeout( () => setText(words[count].slice(0, i)), typingDuration + 100*(currWord.length - i)))
+        if (i!==0 && words[returnIndex(count+1)].startsWith(words[count].slice(0, i))) {
+          break
+        }
     }
     
-    const deletingDuration = 100 * words[count].length + 500
+    const deletingDuration = 100 * (currWord.length - shared) + 500
 
-    timeouts.push(setTimeout(() => setIsTyping(false), typingDuration + deletingDuration + 2000))
+    timeouts.push(setTimeout(() => setIsTyping(false), typingDuration + deletingDuration + 1000))
 
     timeouts.push(setTimeout ((() =>{
     setCount( count === words.length-1 ? 0 : count + 1)
-    }), typingDuration + deletingDuration + 2000))
+    }), typingDuration + deletingDuration + 1000))
 
     return () => { timeouts.forEach(timeout => clearTimeout(timeout)) }
 
