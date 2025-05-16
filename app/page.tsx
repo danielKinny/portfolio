@@ -27,7 +27,7 @@ export default function Home() {
   },[isTyping])
 
   useEffect( () => {
-    let timeouts: NodeJS.Timeout[] = [];
+    const timeouts: NodeJS.Timeout[] = [];
 
     const currWord = words[count];
     const nextWord = words[returnIndex(count+1)];
