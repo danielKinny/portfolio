@@ -7,7 +7,7 @@ export default function Home() {
   const [count, setCount] = useState(0);
   const [isTyping, setIsTyping] = useState(false);
 
-  const words : string[] = ["i am a student", "i am an innovator", "i am a creator"];
+  const words: string[] = [ "smart", "beautiful", "awesome", "body tea", "intelligent", "too smart for this world"];
 
   const returnIndex = (index: number) => index%words.length;
 
@@ -72,7 +72,7 @@ export default function Home() {
   return (
     <div className="min-h-screen flex justify-center items-center">
       <h1 className="text-4xl font-bold">
-        {text}<span>{blinker}</span>
+        my girlfriend is {text}<span>{blinker}</span>
       </h1>
     </div>
   );
